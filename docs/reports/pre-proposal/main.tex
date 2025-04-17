@@ -23,9 +23,7 @@ College of Computing and Informatics, Drexel University, Philadelphia, PA, USA \
 
 \maketitle
 
-\section*{\textcolor{lightred}{r}Evo\textcolor{lightred}{L}ution: RL for learning optimal agent design}
-
-
+\section*{\textcolor{lightred}{r}Evo\textcolor{lightred}{L}ution: RL for Learning Optimal Agent Design}
 
 \paragraph{Overview} Our goal is to create an agent that uses reinforcement learning (RL) to dynamically optimize its physical morphology—such as limb count, joint configuration, and overall shape—to efficiently run. We aim to use Nvidia's \textbf{Isaac Lab} for realistic 3D simulations \cite{orbit}, though it doesn't natively support dynamic morphology adjustments during training.
 \paragraph{Proposed Approach} To address this, we plan to pre-select a set of body designs parameterized by URDF files. Each design will be trained separately, evaluated, and iteratively refined by replacing the lowest-performing morphologies. Over successive generations, we expect convergence toward an optimal design. Hence, the name of our approach is inspired by "evolutionary" algorithms.
