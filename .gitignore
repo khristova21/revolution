@@ -1,6 +1,8 @@
 # To run Isaac Lab, you need to clone the Isaac Lab repo. 
 # We do not need this to be on our repo, but ensure it is on your local machine as you follow the installation guide
-isaac-sim/
+IsaacLab
+# Don't push python enviroment!
+isaac_env
 
 # General
 .vscode
