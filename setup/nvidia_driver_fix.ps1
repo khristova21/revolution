@@ -1,3 +1,5 @@
+# TO DO... Verify this actually does what it needs to. 
+
 # 1) Open an elevated PowerShell (Win-X → “Windows Terminal (Admin)”).
 
 # 2) Find the path to NVIDIA’s Vulkan ICD file automatically
