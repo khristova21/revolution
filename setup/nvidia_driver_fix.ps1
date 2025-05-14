@@ -1,6 +1,3 @@
-# 0) Make sure the AMD Radeon 780 M is ENABLED again in Device Manager.
-#    You don't have to reboot.
-
 # 1) Open an elevated PowerShell (Win-X → “Windows Terminal (Admin)”).
 
 # 2) Find the path to NVIDIA’s Vulkan ICD file automatically
