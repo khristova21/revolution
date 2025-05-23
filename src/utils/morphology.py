@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from enum import Enum
 from xml.dom import minidom
 import os
@@ -36,27 +37,31 @@ class Inertial:
         return self.__origin
     
 class Geometry():
-    def __init__(self):
-        raise Exception("Sorry, this is just an interface, please use a child")
+    def __init__(self, name: str, dictionary: dict[str, any]):
+        self.__name: str = name
+        self.__attributes: dict[str, any] = dictionary
+
+    def getName(self):
+        return self.__name
 
     def getAttributes(self) -> dict[str, any]:
         return self.__attributes
     
 class Box(Geometry):
     def __init__(self, size: tuple[float, float, float]):
-        self.__attributes: dict[str, any] = {"size": (size[0], size[1], size[2])}
+        super().__init__("box", {'size' : (size[0], size[1], size[2])})
 
 class Cylinder(Geometry):
     def __init__(self, radius: float, length: float):
-        self.__attributes: dict[str, any] = {"radius": radius, "length": length}
+        super().__init__("cylinder", {'radius' : radius, 'length': length})
 
 class Sphere(Geometry):
     def __init__(self, radius: float):
-        self.__attributes: dict[str, any] = {"radius": radius}
+        super().__init__("sphere", {'radius' : radius})
 
 class Mesh(Geometry):
     def __init__(self, filename: str, scale: float = None):
-        self.__attributes: dict[str, any] = {"filename": filename, "scale": scale}
+        super().__init__("mesh", {'filename' : filename, 'scale' : scale})
 
 class Collision:
     def __init__(self, 
@@ -96,8 +101,12 @@ class Material():
         return self.__texture
 
 class Visual(Collision):
-    def __init__(self, material: Material = None):
-        super.__init__()
+    def __init__(self, 
+                 geometry: Geometry, 
+                 name: str = None, 
+                 origin: Origin = None, 
+                 material: Material = None):
+        super().__init__(geometry, name, origin)
         self.__material: Material = material
 
     def getMaterial(self) -> Material:
@@ -111,8 +120,8 @@ class Link:
                  collisions: list[Collision] = []):
         self.__name: str = name
         self.__inertial: Inertial = inertial
-        self.__visuals[Visual] = visuals
-        self.__collisions[Collision] = collisions
+        self.__visuals: list[Visual] = visuals
+        self.__collisions: list[Collision] = collisions
 
     def getName(self) -> str:
         return self.__name
@@ -129,12 +138,12 @@ class Link:
 ### Joint Attributes
 
 class Type(Enum):
-    REVOLUTE = 1
-    CONTINUOUS = 2
-    PRISMATIC = 3
-    FIXED = 4
-    FLOATING = 5
-    PLANAR = 6
+    REVOLUTE = "revolute"
+    CONTINUOUS = "continuous"
+    PRISMATIC = "prismatic"
+    FIXED = "fixed"
+    FLOATING = "floating"
+    PLANAR = "planar"
 
 class Calibration:
     def __init__(self, rising: float = None, falling: float = None):
@@ -246,17 +255,56 @@ class Joint:
 
         if (type == Type.REVOLUTE or type == Type.PRISMATIC) and limit == None:
             raise ValueError("Limit is required for revolute and prismatic joints")
+        
+    def getName(self) -> str:
+        return self.__name
+    
+    def getType(self) -> Type:
+        return self.__type
+    
+    def getParent(self) -> Link:
+        return self.__parent
+    
+    def getChild(self) -> Link:
+        return self.__child
+    
+    def getOrigin(self) -> Origin:
+        return self.__origin
+    
+    def getAxis(self) -> tuple[float, float, float]:
+        return self.__axis
+    
+    def getCalibration(self) -> Calibration:
+        return self.__calibration
+    
+    def getDynamics(self) -> Dynamics:
+        return self.__dynamics
+    
+    def getLimit(self) -> Limit:
+        return self.__limit
+    
+    def getMimic(self) -> Mimic:
+        return self.__mimic
+    
+    def getSafetyController(self) -> SafetyController:
+        return self.__safetyController
 
 ### Robot Attributes
 
 class Robot:
     def __init__(self, name: str):
         self.__name: str = name
-        self.__links[Link] = []
-        self.__joints[Joint] = []
+        self.__links: list[Link] = []
+        self.__joints: list[Joint] = []
 
     def getName(self) -> str:
         return self.__name
+    
+    def getLinks(self) -> list[Link]:
+        return self.__links
+    
+    def getJoints(self) -> list[Joint]:
+        return self.__joints
 
     def addLink(self, link: Link):
         self.__links.append(link)
@@ -266,34 +314,243 @@ class Robot:
 
 ### Create URDF file based on given Robot
 
-def createURDF():
+def convertRobotToUrdf(robot: Robot):
     # create document
     doc = minidom.Document()
 
-    # create robot
-    robot = doc.createElement('robot')
-    robot.setAttribute('name', 'robot')
-    doc.appendChild(robot)
+    # add robot div
+    robotDiv = doc.createElement('robot')
+    robotDiv.setAttribute('name', robot.getName())
+    doc.appendChild(robotDiv)
 
-    # create example link
-    link = doc.createElement('link')
-    link.setAttribute('name', 'base_footprint')
-    robot.appendChild(link)
+    # add link divs
+    for link in robot.getLinks():
+        linkDiv = doc.createElement('link')
+        linkDiv.setAttribute('name', link.getName())
+
+        if (inertial := link.getInertial()) is not None:
+            inertialDiv = doc.createElement('inertial')
+            if (origin := inertial.getOrigin()) is not None:
+                originDiv = doc.createElement('origin')
+                if (xyz := origin.getXyz()) is not None:
+                    originDiv.setAttribute('xyz', f'{xyz[0]} {xyz[1]} {xyz[2]}')
+                if (rpy := origin.getRpy()) is not None:
+                    originDiv.setAttribute('rpy', f'{rpy[0]} {rpy[1]} {rpy[2]}')
+                inertialDiv.appendChild(originDiv)
+
+            massDiv = doc.createElement('mass')
+            massDiv.setAttribute('value', f'{inertial.getMass()}')
+            inertialDiv.appendChild(massDiv)
+
+            inertia = inertial.getInertia()
+            inertiaDiv = doc.createElement('inertia')
+            inertiaDiv.setAttribute('ixx', f'{inertia[0]}')
+            inertiaDiv.setAttribute('ixy', f'{inertia[1]}')
+            inertiaDiv.setAttribute('ixz', f'{inertia[2]}')
+            inertiaDiv.setAttribute('iyy', f'{inertia[3]}')
+            inertiaDiv.setAttribute('iyz', f'{inertia[4]}')
+            inertiaDiv.setAttribute('izz', f'{inertia[5]}')
+            inertialDiv.appendChild(inertiaDiv)
+            linkDiv.appendChild(inertialDiv)
+
+        for visual in link.getVisuals():
+            visualDiv = doc.createElement('visual')
+            if (name := visual.getName()) is not None:
+                visualDiv.setAttribute('name', name)
+            if (origin := visual.getOrigin()) is not None:
+                originDiv = doc.createElement('origin')
+                if (xyz := origin.getXyz()) is not None:
+                    originDiv.setAttribute('xyz', f'{xyz[0]} {xyz[1]} {xyz[2]}')
+                if (rpy := origin.getRpy()) is not None:
+                    originDiv.setAttribute('rpy', f'{rpy[0]} {rpy[1]} {rpy[2]}')
+                visualDiv.appendChild(originDiv)
+            
+            geometry = visual.getGeometry()
+            geometryDiv = doc.createElement('geometry')
+            shapeDiv = doc.createElement(geometry.getName())
+            for attribute, value in geometry.getAttributes().items():
+                if isinstance(value, Iterable):
+                    string = ""
+                    for v in value:
+                        string += f"{v} "
+                    shapeDiv.setAttribute(attribute, string.rstrip())
+                else:
+                    shapeDiv.setAttribute(attribute, f'{value}')
+            geometryDiv.appendChild(shapeDiv)
+            visualDiv.appendChild(geometryDiv)
+
+            if (material := visual.getMaterial()) is not None:
+                materialDiv = doc.createElement('material')
+                materialDiv.setAttribute('name', material.getName())
+
+                if (color := material.getColor()) is not None:
+                    colorDiv = doc.createElement('color')
+                    colorDiv.setAttribute('rgba', f'{color[0]} {color[1]} {color[2]} {color[3]}')
+                    materialDiv.appendChild(colorDiv)
+                
+                if (texture := material.getTexture()) is not None:
+                    textureDiv = doc.createElement('texture')
+                    textureDiv.setAttribute('filename', texture)
+                    materialDiv.appendChild(textureDiv)
+                visualDiv.appendChild(materialDiv)
+            linkDiv.appendChild(visualDiv)
+
+        for collision in link.getCollisions():
+            collisionDiv = doc.createElement('collision')
+            if (name := collision.getName()) is not None:
+                collisionDiv.setAttribute('name', name)
+            if (origin := collision.getOrigin()) is not None:
+                originDiv = doc.createElement('origin')
+                if (xyz := origin.getXyz()) is not None:
+                    originDiv.setAttribute('xyz', f'{xyz[0]} {xyz[1]} {xyz[2]}')
+                if (rpy := origin.getRpy()) is not None:
+                    originDiv.setAttribute('rpy', f'{rpy[0]} {rpy[1]} {rpy[2]}')
+                collisionDiv.appendChild(originDiv)
+
+            geometry = collision.getGeometry()
+            geometryDiv = doc.createElement('geometry')
+            shapeDiv = doc.createElement(geometry.getName())
+            for attribute, value in geometry.getAttributes().items():
+                if isinstance(value, Iterable):
+                    string = ""
+                    for v in value:
+                        string += f"{v} "
+                    shapeDiv.setAttribute(attribute, string.rstrip())
+                else:
+                    shapeDiv.setAttribute(attribute, f'{value}')
+            geometryDiv.appendChild(shapeDiv)
+            collisionDiv.appendChild(geometryDiv)
+            linkDiv.appendChild(collisionDiv)
+        robotDiv.appendChild(linkDiv)
+
+    # add joint divs
+    for joint in robot.getJoints():
+        jointDiv = doc.createElement('joint')
+        jointDiv.setAttribute('name', joint.getName())
+        jointDiv.setAttribute('type', joint.getType().value)
+
+        if (origin := joint.getOrigin()) is not None:
+            originDiv = doc.createElement('origin')
+            if (xyz := origin.getXyz()) is not None:
+                originDiv.setAttribute('xyz', f'{xyz[0]} {xyz[1]} {xyz[2]}')
+            if (rpy := origin.getRpy()) is not None:
+                originDiv.setAttribute('rpy', f'{rpy[0]} {rpy[1]} {rpy[2]}')
+            jointDiv.appendChild(originDiv)
+
+        parent = joint.getParent()
+        parentDiv = doc.createElement('parent')
+        parentDiv.setAttribute('link', parent.getName())
+        jointDiv.appendChild(parentDiv)
+
+        child = joint.getChild()
+        childDiv = doc.createElement('child')
+        childDiv.setAttribute('link', child.getName())
+        jointDiv.appendChild(childDiv)
+
+        if (axis := joint.getAxis()) is not None:
+            axisDiv = doc.createElement('axis')
+            axisDiv.setAttribute('xyz', f'{axis[0]} {axis[1]} {axis[2]}')
+            jointDiv.appendChild(axisDiv)
+
+        if (calibration := joint.getCalibration()) is not None:
+            calibrationDiv = doc.createElement('calibration')
+            if (rising := calibration.getRising()) is not None:
+                calibrationDiv.setAttribute('rising', f'{rising}')
+            if (falling := calibration.getFalling()) is not None:
+                calibrationDiv.setAttribute('falling', f'{falling}')
+            jointDiv.appendChild(calibrationDiv)
+
+        if (dynamics := joint.getDynamics()) is not None:
+            dynamicsDiv = doc.createElement('dynamics')
+            if (damping := dynamics.getDamping()) is not None:
+                dynamicsDiv.setAttribute('damping', f'{damping}')
+            if (friction := dynamics.getFriction()) is not None:
+                dynamicsDiv.setAttribute('friction', f'{friction}')
+            jointDiv.appendChild(dynamicsDiv)
+
+        if (limit := joint.getLimit()) is not None:
+            limitDiv = doc.createElement('limit')
+            limitDiv.setAttribute('effort', f'{limit.getEffort()}')
+            limitDiv.setAttribute('velocity', f'{limit.getVelocity()}')
+            if (lower := limit.getLower()) is not None:
+                limitDiv.setAttribute('lower', f'{lower}')
+            if (upper := limit.getUpper()) is not None:
+                limitDiv.setAttribute('upper', f'{upper}')
+            jointDiv.appendChild(limitDiv)
+        
+        if (mimic := joint.getMimic()) is not None:
+            mimicDiv = doc.createElement('mimic')
+            mimicDiv.setAttribute('joint', mimic.getName())
+            if (multiplier := mimic.getMultiplier()) is not None:
+                mimicDiv.setAttribute('multiplier', f'{multiplier}')
+            if (offset := mimic.getOffset()) is not None:
+                mimicDiv.setAttribute('offset', f'{offset}')
+            jointDiv.appendChild(mimicDiv)
+
+        if (safetyController := joint.getSafetyController()) is not None:
+            safetyControllerDiv = doc.createElement('safety_controller')
+            safetyControllerDiv.setAttribute('k_velocity', f'{safetyController.getKVelocity()}')
+            if (kPosition := safetyController.getKPosition()) is not None:
+                safetyControllerDiv.setAttribute('k_position', f'{kPosition}')
+            if (softLowerLimit := safetyController.getSoftLowerLimit()) is not None:
+                safetyControllerDiv.setAttribute('soft_lower_limit', f'{softLowerLimit}')
+            if (softUpperLimit := safetyController.getSoftUpperLimit()) is not None:
+                safetyControllerDiv.setAttribute('soft_upper_limit', f'{softUpperLimit}')
+            jointDiv.appendChild(safetyControllerDiv)
+
+        robotDiv.appendChild(jointDiv)
 
     # define urdf path
     doc_str = doc.toprettyxml(indent = "\t")
     cwd = os.getcwd()
-    path = os.path.join(cwd, "assets", "urdf", "test1.urdf")
+    path = os.path.join(cwd, "assets", "urdf", f'{robot.getName()}.urdf')
 
     # write to file
     with open(path, "w") as f:
         f.write(doc_str)
+
+### TODO Create a Robot from a given URDF file
+
+def convertUrdfToRobot(filename: str):
+    pass
+
+### TODO Evolve a set of Robots based on a given set and some data
+
+def evolve(robots: list[Robot], data) -> list[Robot]:
+    pass
 
 if __name__ == "__main__":
     
     # a tree is given to mutation service to produce another tree
     # tree is fed to URDF creator
     
-    
-    # TEST
-    createURDF()
+    # TEST 
+    # FYI I just made up this design, I have no idea how it looks or if it works, Safa please give it a shot
+    robot: Robot = Robot("robot_name")
+    link1: Link = Link("my_link", 
+                       Inertial(1, (100, 0, 0, 100, 0, 100), Origin((0, 0, 0.5), (0, 0, 0))), 
+                       [Visual(Box((1, 1, 1)), 
+                               None, 
+                               Origin((0, 0, 0), (0, 0, 0)), 
+                               Material("Cyan", (0, 1.0, 1.0, 1.0)))], 
+                       [Collision(Cylinder(1, 0.5), 
+                                  None, 
+                                  Origin((0, 0, 0), (0, 0, 0)))])
+    link2: Link = Link("another_link")
+    joint: Joint = Joint("my_joint", 
+                         Type.FLOATING, 
+                         link1, 
+                         link2,
+                         Origin((0, 0, 1), (0, 0, 3.1416)),
+                         None,
+                         Calibration(0.0),
+                         Dynamics(0.0, 0.0),
+                         Limit(30, 1.0, -2.2, 0.7),
+                         None,
+                         SafetyController(10, -2.0, 0.5, 15))
+
+    robot.addLink(link1)
+    robot.addLink(link2)
+    robot.addJoint(joint)
+
+    convertRobotToUrdf(robot)
