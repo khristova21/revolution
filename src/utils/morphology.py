@@ -3,6 +3,10 @@ from enum import Enum
 from xml.dom import minidom
 import os
 
+### Constants
+ASSETS = "assets"
+URDF = "urdf"
+
 ### Link Attributes
 
 class Origin:
@@ -503,7 +507,7 @@ def convertRobotToUrdf(robot: Robot):
     # define urdf path
     doc_str = doc.toprettyxml(indent = "\t")
     cwd = os.getcwd()
-    path = os.path.join(cwd, "assets", "urdf", f'{robot.getName()}.urdf')
+    path = os.path.join(cwd, ASSETS, URDF, f'{robot.getName()}.urdf')
 
     # write to file
     with open(path, "w") as f:
@@ -512,7 +516,14 @@ def convertRobotToUrdf(robot: Robot):
 ### TODO Create a Robot from a given URDF file
 
 def convertUrdfToRobot(filename: str):
-    pass
+     # create doc object
+     cwd = os.getcwd()
+     path = os.path.join(cwd, ASSETS, URDF, filename)
+     doc = minidom.parse(path)
+
+    # TODO remove
+     print(doc.nodeName)
+     print(doc.firstChild.tagName)
 
 ### TODO Evolve a set of Robots based on a given set and some data
 
@@ -554,3 +565,5 @@ if __name__ == "__main__":
     robot.addJoint(joint)
 
     convertRobotToUrdf(robot)
+
+    convertUrdfToRobot("robot_name.urdf")
