@@ -1,5 +1,4 @@
-# 0) Make sure the AMD Radeon 780 M is ENABLED again in Device Manager.
-#    You don't have to reboot.
+# TO DO... Verify this actually does what it needs to. 
 
 # 1) Open an elevated PowerShell (Win-X → “Windows Terminal (Admin)”).
 
