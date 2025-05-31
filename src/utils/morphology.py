@@ -21,6 +21,15 @@ class Origin:
     
     def getRpy(self) -> tuple[float, float, float]:
         return self.__rpy
+    
+    def __str__(self):
+        string = "Origin: "
+        if (xyz := self.getXyz()) is not None:
+            string += f"x={xyz[0]} y={xyz[1]} z={xyz[2]}   "
+        if (rpy := self.getRpy()) is not None:
+            string += f"r={rpy[0]} p={rpy[1]} y={rpy[2]}"
+        string += "\n"
+        return string
 
 class Inertial:
     def __init__(self, 
@@ -40,6 +49,15 @@ class Inertial:
     def getOrigin(self) -> Origin:
         return self.__origin
     
+    def __str__(self):
+        string = "Inertial:\n"
+        if (origin := self.getOrigin()) is not None:
+            string += "*       " + str(origin)
+        string += f"*       Mass: {self.getMass()}\n"
+        inertia = self.getInertia()
+        string += f"*       Inertia: ixx={inertia[0]} ixy={inertia[1]} ixz={inertia[2]} iyy={inertia[3]} iyz={inertia[4]} izz={inertia[5]}\n"
+        return string
+    
 class Geometry():
     def __init__(self, name: str, dictionary: dict[str, any]):
         self.__name: str = name
@@ -50,6 +68,14 @@ class Geometry():
 
     def getAttributes(self) -> dict[str, any]:
         return self.__attributes
+    
+    def __str__(self):
+        string = "Geometry:\n"
+        string += f"*         {self.getName().capitalize()}: "
+        for key, value in self.getAttributes().items():
+            string += f"{key}={value} "
+        string += "\n"
+        return string
     
 class Box(Geometry):
     def __init__(self, size: tuple[float, float, float]):
@@ -86,6 +112,16 @@ class Collision:
     def getOrigin(self) -> Origin:
         return self.__origin
     
+    def __str__(self):
+        string = f"{self.__class__.__name__}:"
+        if (name := self.getName()) is not None:
+            string += " " + name
+        string += "\n"
+        if (origin := self.getOrigin()) is not None:
+            string += "*       " + str(origin)
+        string += "*       " + str(self.getGeometry())
+        return string
+    
 class Material():
     def __init__(self, 
                  name: str, 
@@ -103,6 +139,15 @@ class Material():
     
     def getTexture(self) -> str:
         return self.__texture
+    
+    def __str__(self):
+        string = "Material: " + self.getName() + "\n"
+        if (color := self.getColor()) is not None:
+            string += f"*         Color: r={color[0]} g={color[1]} b={color[2]} a={color[3]}   "
+        if (texture := self.getTexture()) is not None:
+            string += f"texture={texture}"
+        string += "\n"
+        return string
 
 class Visual(Collision):
     def __init__(self, 
@@ -115,6 +160,12 @@ class Visual(Collision):
 
     def getMaterial(self) -> Material:
         return self.__material
+    
+    def __str__(self):
+        string = super().__str__()
+        if (material := self.getMaterial()) is not None:
+            string += "*       " + str(material)
+        return string
 
 class Link:
     def __init__(self, 
@@ -138,6 +189,16 @@ class Link:
     
     def getCollisions(self) -> list[Collision]:
         return self.__collisions
+    
+    def __str__(self):
+        string = "Link: " + self.getName() + "\n"
+        if (inertial := self.getInertial()) is not None:
+            string += "*     " + str(inertial)
+        for visual in self.getVisuals():
+            string += "*     " + str(visual)
+        for collision in self.getCollisions():
+            string += "*     " + str(collision)
+        return string
 
 ### Joint Attributes
 
@@ -160,6 +221,15 @@ class Calibration:
     def getFalling(self) -> float:
         return self.__falling
     
+    def __str__(self):
+        string = "Calibration: "
+        if (rising := self.getRising()) is not None:
+            string += f"rising={rising}   "
+        if (falling := self.getFalling()) is not None:
+            string += f"falling={falling}"
+        string += "\n"
+        return string
+    
 class Dynamics:
     def __init__(self, damping: float = None, friction: float = None):
         self.__damping: float = damping
@@ -170,6 +240,15 @@ class Dynamics:
     
     def getFriction(self) -> float:
         return self.__friction
+    
+    def __str__(self):
+        string = "Dynamics: "
+        if (damping := self.getDamping()) is not None:
+            string += f"damping={damping}   "
+        if (friction := self.getFriction()) is not None:
+            string += f"friction={friction}"
+        string += "\n"
+        return string
     
 class Limit:
     def __init__(self, 
@@ -193,6 +272,16 @@ class Limit:
     
     def getUpper(self) -> float:
         return self.__upper
+    
+    def __str__(self):
+        string = f"Limit: "
+        if (lower := self.getLower()) is not None:
+            string += f"lower={lower} "
+        if (upper := self.getUpper()) is not None:
+            string += f"upper={upper} "
+        string += f"effort={self.getEffort()} velocity={self.getVelocity()}"
+        string += "\n"
+        return string
 
 class Mimic:
     def __init__(self, name: str, multiplier: float = None, offset: float = None):
@@ -208,6 +297,15 @@ class Mimic:
     
     def getOffset(self) -> float:
         return self.__offset
+    
+    def __str__(self):
+        string = f"Mimic: joint={self.getName()} "
+        if (multiplier := self.getMultiplier()) is not None:
+            string += f"multiplier={multiplier} "
+        if (offset := self.getOffset()) is not None:
+            string += f"offset={offset}"
+        string += "\n"
+        return string
     
 class SafetyController:
     def __init__(self, 
@@ -231,6 +329,18 @@ class SafetyController:
     
     def getKPosition(self) -> float:
         return self.__kPosition
+    
+    def __str__(self):
+        string = "Safety Controller: "
+        if (low := self.getSoftLowerLimit()) is not None:
+            string += f"Soft Lower Limit={low} "
+        if (upper := self.getSoftUpperLimit()) is not None:
+            string += f"Soft Upper Limit={upper} "
+        if (kpos := self.getKPosition()) is not None:
+            string += f"K Position={kpos} "
+        string += f"K Velocity={self.getKVelocity()}"
+        string += "\n"
+        return string
 
 class Joint:
     def __init__(self, 
@@ -292,6 +402,26 @@ class Joint:
     
     def getSafetyController(self) -> SafetyController:
         return self.__safetyController
+    
+    def __str__(self):
+        string = "Joint: " + self.getName() + f"   ({self.getType().value})" + "\n"
+        if (origin := self.getOrigin()) is not None:
+            string += "*     " + str(origin)
+        string += f"*     Parent: {self.getParent().getName()}\n"
+        string += f"*     Child: {self.getChild().getName()}\n"
+        if (axis := self.getAxis()) is not None:
+            string += f"*     Axis: x={axis[0]} y={axis[1]} z={axis[2]}"
+        if (calibration := self.getCalibration()) is not None:
+            string += "*     " + str(calibration)
+        if (dynamics := self.getDynamics()) is not None:
+            string += "*     " + str(dynamics)
+        if (limit := self.getLimit()) is not None:
+            string += "*     " + str(limit)
+        if (mimic := self.getMimic()) is not None:
+            string += "*     " + str(mimic)
+        if (safetyController := self.getSafetyController()) is not None:
+            string += "*     " + str(safetyController)
+        return string
 
 ### Robot Attributes
 
@@ -315,6 +445,14 @@ class Robot:
 
     def addJoint(self, joint: Joint):
         self.__joints.append(joint)
+
+    def __str__(self):
+        string = "> Robot: " + self.getName() + "\n"
+        for link in self.getLinks():
+            string += "*   " + str(link)
+        for joint in self.getJoints():
+            string += "*   " + str(joint)
+        return string
 
 ### Create URDF file based on given Robot
 
@@ -516,14 +654,23 @@ def convertRobotToUrdf(robot: Robot):
 ### TODO Create a Robot from a given URDF file
 
 def convertUrdfToRobot(filename: str):
-     # create doc object
-     cwd = os.getcwd()
-     path = os.path.join(cwd, ASSETS, URDF, filename)
-     doc = minidom.parse(path)
+    # create doc object
+    cwd = os.getcwd()
+    path = os.path.join(cwd, ASSETS, URDF, filename)
+    doc = minidom.parse(path)
 
-    # TODO remove
-     print(doc.nodeName)
-     print(doc.firstChild.tagName)
+    # create robot object
+    robot = Robot(doc.getElementsByTagName("robot")[0].getAttribute("name"))
+
+    # get links and joints
+    for linkDiv in doc.getElementsByTagName("link"):
+        name = linkDiv.getAttribute("name")
+        
+
+        link = Link(name)
+        robot.addLink(link)
+
+    print(robot)
 
 ### TODO Evolve a set of Robots based on a given set and some data
 
