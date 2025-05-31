@@ -672,11 +672,6 @@ def convertUrdfToRobot(filename: str):
 
     print(robot)
 
-### TODO Evolve a set of Robots based on a given set and some data
-
-def evolve(robots: list[Robot], data) -> list[Robot]:
-    pass
-
 if __name__ == "__main__":
     
     # a tree is given to mutation service to produce another tree
