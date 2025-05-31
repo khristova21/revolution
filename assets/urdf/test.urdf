@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <robot name="caterpillar">
-
   <!-- ===== Link 0 (head) ===== -->
   <link name="segment_0">
     <inertial>
@@ -10,7 +9,6 @@
                iyy="2.0e-4" iyz="0"
                izz="1.0e-4"/>
     </inertial>
-
     <visual>
       <origin xyz="0 0 0" rpy="0 1.5708 0"/>
       <geometry>
@@ -20,7 +18,6 @@
         <color rgba="0.2 0.8 0.2 1"/>
       </material>
     </visual>
-
     <collision>
       <origin xyz="0 0 0" rpy="0 1.5708 0"/>
       <geometry>
@@ -28,113 +25,164 @@
       </geometry>
     </collision>
   </link>
-
+  
+  <!-- ===== Intermediate Link 0-1 (for compound joint) ===== -->
+  <link name="intermediate_0_1">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>  <!-- Very small mass -->
+      <inertia ixx="1.0e-6" ixy="0"  ixz="0"
+               iyy="1.0e-6" iyz="0"
+               izz="1.0e-6"/>
+    </inertial>
+    <!-- No visual - invisible intermediate link -->
+  </link>
+  
   <!-- ===== Link 1 ===== -->
   <link name="segment_1">
     <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.03 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
       <inertia ixx="2.0e-4" ixy="0"  ixz="0"
                iyy="2.0e-4" iyz="0"
                izz="1.0e-4"/>
     </inertial>
-
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
       <material name="green"/>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
     </collision>
   </link>
-
+  
+  <!-- ===== Intermediate Link 1-2 (for compound joint) ===== -->
+  <link name="intermediate_1_2">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1.0e-6" ixy="0"  ixz="0"
+               iyy="1.0e-6" iyz="0"
+               izz="1.0e-6"/>
+    </inertial>
+  </link>
+  
   <!-- ===== Link 2 ===== -->
   <link name="segment_2">
     <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.03 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
       <inertia ixx="2.0e-4" ixy="0"  ixz="0"
                iyy="2.0e-4" iyz="0"
                izz="1.0e-4"/>
     </inertial>
-
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
       <material name="green"/>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
     </collision>
   </link>
-
+  
+  <!-- ===== Intermediate Link 2-3 (for compound joint) ===== -->
+  <link name="intermediate_2_3">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1.0e-6" ixy="0"  ixz="0"
+               iyy="1.0e-6" iyz="0"
+               izz="1.0e-6"/>
+    </inertial>
+  </link>
+  
   <!-- ===== Link 3 (tail) ===== -->
   <link name="segment_3">
     <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.03 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
       <inertia ixx="2.0e-4" ixy="0"  ixz="0"
                iyy="2.0e-4" iyz="0"
                izz="1.0e-4"/>
     </inertial>
-
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
       <material name="green"/>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
     </collision>
   </link>
-
-  <!-- ===== Joint 1 ===== -->
-  <joint name="joint_0_1" type="revolute">
-    <!-- connects segment_0 (parent) to segment_1 (child) -->
+  
+  <!-- ===== Joint 0-1 Part A (Pitch - up/down bending) ===== -->
+  <joint name="joint_0_1_pitch" type="revolute">
     <parent link="segment_0"/>
-    <child  link="segment_1"/>
-    <!-- joint frame sits at tail of parent capsule -->
-    <origin xyz="0.06 0 0" rpy="0 0 0"/>
-    <!-- bend up/down around local z-axis -->
-    <axis xyz="0 0 1"/>
+    <child link="intermediate_0_1"/>
+    <origin xyz="0.03 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>  <!-- Rotation around Z-axis for pitch -->
     <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
   </joint>
-
-  <!-- ===== Joint 2 ===== -->
-  <joint name="joint_1_2" type="revolute">
+  
+  <!-- ===== Joint 0-1 Part B (Yaw - left/right bending) ===== -->
+  <joint name="joint_0_1_yaw" type="revolute">
+    <parent link="intermediate_0_1"/>
+    <child link="segment_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>  <!-- Rotation around Y-axis for yaw -->
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  
+  <!-- ===== Joint 1-2 Part A (Pitch) ===== -->
+  <joint name="joint_1_2_pitch" type="revolute">
     <parent link="segment_1"/>
-    <child  link="segment_2"/>
+    <child link="intermediate_1_2"/>
     <origin xyz="0.06 0 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
   </joint>
-
-  <!-- ===== Joint 3 ===== -->
-  <joint name="joint_2_3" type="revolute">
+  
+  <!-- ===== Joint 1-2 Part B (Yaw) ===== -->
+  <joint name="joint_1_2_yaw" type="revolute">
+    <parent link="intermediate_1_2"/>
+    <child link="segment_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  
+  <!-- ===== Joint 2-3 Part A (Pitch) ===== -->
+  <joint name="joint_2_3_pitch" type="revolute">
     <parent link="segment_2"/>
-    <child  link="segment_3"/>
+    <child link="intermediate_2_3"/>
     <origin xyz="0.06 0 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
   </joint>
-
+  
+  <!-- ===== Joint 2-3 Part B (Yaw) ===== -->
+  <joint name="joint_2_3_yaw" type="revolute">
+    <parent link="intermediate_2_3"/>
+    <child link="segment_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
 </robot>
