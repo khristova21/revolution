@@ -16,7 +16,7 @@ If in VSCode, ***press cmd + shift + P***, search ***"Python: Select Interpreter
 - Linux: ***TODO***
 - Windows: ***TODO***
 
-For additional details see:
+For additional details see:  
 https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/pip_installation.html
 
 # Project Structure
