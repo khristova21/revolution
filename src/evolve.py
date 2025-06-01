@@ -45,6 +45,8 @@ def addLimb(robot: Robot, randomness: float = 0.1) -> Robot:
     # Create a new link.
     # Create a new joint.
     # Add to the robot torso as a child.
+
+    # Make sure it doesn't collide with another limb 
     return mutatedRobot
 
 # Remove a limb from the torso. 
