@@ -459,6 +459,12 @@ class Robot:
     def getLinks(self) -> list[Link]:
         return self.__links
     
+    def getLinkByName(self, name: str) -> Link:
+        for link in self.getLinks():
+            if link.getName() == name:
+                return link
+        return None
+    
     def getJoints(self) -> list[Joint]:
         return self.__joints
 
@@ -690,6 +696,7 @@ def convertUrdfToRobot(filename: str) -> Robot:
         inertial = None
         visuals: list[Visual] = []
         collisions: list[Collision] = []
+
         for child in linkDiv.childNodes:
             if child.nodeType == minidom.Node.ELEMENT_NODE:
                 if child.tagName == "inertial":
@@ -815,6 +822,100 @@ def convertUrdfToRobot(filename: str) -> Robot:
         robot.addLink(link)
 
     # get joints
+    for jointDiv in doc.getElementsByTagName("joint"):
+        name = jointDiv.getAttribute("name")
+        jointType = Type(jointDiv.getAttribute("type"))
+        parent = None
+        jointChild = None
+        origin = None
+        axis = None
+        calibration = None
+        dynamics = None
+        limit = None
+        mimic = None
+        safetyController = None
+
+        for child in jointDiv.childNodes:
+            if child.nodeType == minidom.Node.ELEMENT_NODE:
+                if child.tagName == "parent":
+                    parent = robot.getLinkByName(child.getAttribute("link"))
+                elif child.tagName == "child":
+                    jointChild = robot.getLinkByName(child.getAttribute("link"))
+                elif child.tagName == "origin":
+                    xyz = None
+                    rpy = None
+                    for key, value in child.attributes.items():
+                        values = value.split()
+                        if key == "xyz":
+                            xyz = (float(values[0]), float(values[1]), float(values[2]))
+                        elif key == "rpy":
+                            rpy = (float(values[0]), float(values[1]), float(values[2]))
+                    origin = Origin(xyz, rpy)
+                elif child.tagName == "axis":
+                    xyz = child.getAttribute("xyz").split()
+                    axis = (float(xyz[0]), float(xyz[1]), float(xyz[2]))
+                elif child.tagName == "calibration":
+                    rising = None
+                    falling = None
+                    for key, value in child.attributes.items():
+                        if key == "rising":
+                            rising = float(value)
+                        elif key == "falling":
+                            falling = float(value)
+                    calibration = Calibration(rising, falling)
+                elif child.tagName == "dynamics":
+                    damping = None
+                    friction = None
+                    for key, value in child.attributes.items():
+                        if key == "damping":
+                            damping = float(value)
+                        elif key == "friction":
+                            friction = float(value)
+                    dynamics = Dynamics(damping, friction)
+                elif child.tagName == "limit":
+                    effort = None
+                    velocity = None
+                    lower = None
+                    upper = None
+                    for key, value in child.attributes.items():
+                        if key == "effort":
+                            effort = float(value)
+                        elif key == "velocity":
+                            velocity = float(value)
+                        elif key == "lower":
+                            lower = float(value)
+                        elif key == "upper":
+                            upper = float(value)
+                    limit = Limit(effort, velocity, lower, upper)
+                elif child.tagName == "mimic":
+                    name = None
+                    multiplier = None
+                    offset = None
+                    for key, value in child.attributes.items():
+                        if key == "joint":
+                            name = value
+                        elif key == "multiplier":
+                            multiplier = float(value)
+                        elif key == "offset":
+                            offset = float(value)
+                    mimic = Mimic(name, multiplier, offset)
+                elif child.tagName == "safety_controller":
+                    kVelocity = None
+                    softLowerLimit = None
+                    softUpperLimit = None
+                    kPosition = None
+                    for key, value in child.attributes.items():
+                        if key == "k_velocity":
+                            kVelocity = float(value)
+                        elif key == "soft_lower_limit":
+                            softLowerLimit = float(value)
+                        elif key == "soft_upper_limit":
+                            softUpperLimit = float(value)
+                        elif key == "k_position":
+                            kPosition = float(value)
+                    safetyController = SafetyController(kVelocity, softLowerLimit, softUpperLimit, kPosition)
+        joint = Joint(name, jointType, parent, jointChild, origin, axis, calibration, dynamics, limit, mimic, safetyController)
+        robot.addJoint(joint)
 
     return robot
 
