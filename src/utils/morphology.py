@@ -167,6 +167,11 @@ class Visual(Collision):
             string += "*       " + str(material)
         return string
 
+class Role(Enum):
+    TORSO = "torso"
+    LIMB = "limb"
+    UNKNOWN = "unknown"
+
 class Link:
     def __init__(self, 
                  name: str, 
@@ -177,19 +182,21 @@ class Link:
         self.__inertial: Inertial = inertial
         self.__visuals: list[Visual] = visuals
         self.__collisions: list[Collision] = collisions
-        self.__role: str = Link.parseName(name)
+        self.__role: Role = Link.parseName(name)
 
     @staticmethod
-    def parseName(name: str) -> str:
-        if "torso" in name.lower():
-            return "torso"
+    def parseName(name: str) -> Role:
+        if Role.TORSO.value in name.lower():
+            return Role.TORSO
+        elif Role.LIMB.value in name.lower():
+            return Role.LIMB
         else:
-            return "limb"
+            return Role.UNKNOWN
     
     def getName(self) -> str:
         return self.__name
     
-    def getRole(self) -> str:
+    def getRole(self) -> Role:
         return self.__role
     
     def getInertial(self) -> Inertial:
@@ -202,7 +209,7 @@ class Link:
         return self.__collisions
     
     def __str__(self):
-        string = "Link: " + self.getName() + f"   ({self.getRole()})"  + "\n"
+        string = "Link: " + self.getName() + f"   ({self.getRole().value})"  + "\n"
         if (inertial := self.getInertial()) is not None:
             string += "*     " + str(inertial)
         for visual in self.getVisuals():
@@ -664,7 +671,7 @@ def convertRobotToUrdf(robot: Robot):
 
 ### TODO Create a Robot from a given URDF file
 
-def convertUrdfToRobot(filename: str):
+def convertUrdfToRobot(filename: str) -> Robot:
     # create doc object
     cwd = os.getcwd()
     path = os.path.join(cwd, ASSETS, URDF, filename)
@@ -673,15 +680,38 @@ def convertUrdfToRobot(filename: str):
     # create robot object
     robot = Robot(doc.getElementsByTagName("robot")[0].getAttribute("name"))
 
-    # get links and joints
+    # get links
     for linkDiv in doc.getElementsByTagName("link"):
         name = linkDiv.getAttribute("name")
-        
+        inertial = None
+        visuals: list[Visual] = []
+        collisions: list[Collision] = []
+        for child in linkDiv.childNodes:
+            if child.nodeType == minidom.Node.ELEMENT_NODE:
+                if child.tagName == "inertial":
+                    for c in child.childNodes:
+                        if c.nodeType == minidom.Node.ELEMENT_NODE:
+                            if c.tagName == "origin":
+                                print("Origin")
+                            elif c.tagName == "mass":
+                                print("Mass")
+                            elif c.tagName == "inertia":
+                                print("Inertia")
+                            else:
+                                pass
+                elif child.tagName == "visual":
+                    print("Visual")
+                elif child.tagName == "collision":
+                    print("Collision")
+                else:
+                    pass
 
-        link = Link(name)
+        link = Link(name, inertial, visuals, collisions)
         robot.addLink(link)
 
-    print(robot)
+    # get joints
+
+    return robot
 
 if __name__ == "__main__":
     
@@ -691,7 +721,7 @@ if __name__ == "__main__":
     # TEST 
     # FYI I just made up this design, I have no idea how it looks or if it works, Safa please give it a shot
     robot: Robot = Robot("robot_name")
-    link1: Link = Link("my_link", 
+    link1: Link = Link("torso", 
                        Inertial(1, (100, 0, 0, 100, 0, 100), Origin((0, 0, 0.5), (0, 0, 0))), 
                        [Visual(Box((1, 1, 1)), 
                                None, 
@@ -700,7 +730,7 @@ if __name__ == "__main__":
                        [Collision(Cylinder(1, 0.5), 
                                   None, 
                                   Origin((0, 0, 0), (0, 0, 0)))])
-    link2: Link = Link("another_link")
+    link2: Link = Link("limb")
     joint: Joint = Joint("my_joint", 
                          Type.FLOATING, 
                          link1, 
@@ -717,6 +747,12 @@ if __name__ == "__main__":
     robot.addLink(link2)
     robot.addJoint(joint)
 
+    print("Before:")
+    print(robot)
+
     convertRobotToUrdf(robot)
 
-    convertUrdfToRobot("robot_name.urdf")
+    robot_copy = convertUrdfToRobot("robot_name.urdf")
+
+    print("After:")
+    print(robot_copy)
