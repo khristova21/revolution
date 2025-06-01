@@ -177,9 +177,20 @@ class Link:
         self.__inertial: Inertial = inertial
         self.__visuals: list[Visual] = visuals
         self.__collisions: list[Collision] = collisions
+        self.__role: str = Link.parseName(name)
 
+    @staticmethod
+    def parseName(name: str) -> str:
+        if "torso" in name.lower():
+            return "torso"
+        else:
+            return "limb"
+    
     def getName(self) -> str:
         return self.__name
+    
+    def getRole(self) -> str:
+        return self.__role
     
     def getInertial(self) -> Inertial:
         return self.__inertial
@@ -191,7 +202,7 @@ class Link:
         return self.__collisions
     
     def __str__(self):
-        string = "Link: " + self.getName() + "\n"
+        string = "Link: " + self.getName() + f"   ({self.getRole()})"  + "\n"
         if (inertial := self.getInertial()) is not None:
             string += "*     " + str(inertial)
         for visual in self.getVisuals():
