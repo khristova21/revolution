@@ -85,6 +85,10 @@ class Cylinder(Geometry):
     def __init__(self, radius: float, length: float):
         super().__init__("cylinder", {'radius' : radius, 'length': length})
 
+class Capsule(Geometry):
+    def __init__(self, radius: float, length: float):
+        super().__init__("capsule", {'radius' : radius, 'length': length})
+
 class Sphere(Geometry):
     def __init__(self, radius: float):
         super().__init__("sphere", {'radius' : radius})
@@ -669,7 +673,7 @@ def convertRobotToUrdf(robot: Robot):
     with open(path, "w") as f:
         f.write(doc_str)
 
-### TODO Create a Robot from a given URDF file
+### Create a Robot from a given URDF file
 
 def convertUrdfToRobot(filename: str) -> Robot:
     # create doc object
@@ -689,22 +693,86 @@ def convertUrdfToRobot(filename: str) -> Robot:
         for child in linkDiv.childNodes:
             if child.nodeType == minidom.Node.ELEMENT_NODE:
                 if child.tagName == "inertial":
+                    mass = None
+                    inertia = None
+                    origin = None
                     for c in child.childNodes:
                         if c.nodeType == minidom.Node.ELEMENT_NODE:
                             if c.tagName == "origin":
-                                print("Origin")
+                                xyz = None
+                                rpy = None
+                                for key, value in c.attributes.items():
+                                    values = value.split()
+                                    if key == "xyz":
+                                        xyz = (float(values[0]), float(values[1]), float(values[2]))
+                                    elif key == "rpy":
+                                        rpy = (float(values[0]), float(values[1]), float(values[2]))
+                                origin = Origin(xyz, rpy)
                             elif c.tagName == "mass":
-                                print("Mass")
+                                mass = c.getAttribute("value")
                             elif c.tagName == "inertia":
-                                print("Inertia")
-                            else:
-                                pass
+                                inertia = (float(c.getAttribute("ixx")),
+                                           float(c.getAttribute("ixy")),
+                                           float(c.getAttribute("ixz")),
+                                           float(c.getAttribute("iyy")),
+                                           float(c.getAttribute("iyz")),
+                                           float(c.getAttribute("izz")))
+                    inertial = Inertial(mass, inertia, origin)
                 elif child.tagName == "visual":
-                    print("Visual")
+                    geometry = None
+                    visualName = None
+                    origin = None
+                    material = None
+                    if child.getAttribute("name"):
+                        visualName = child.getAttribute("name")
+                    for c in child.childNodes:
+                        if c.nodeType == minidom.Node.ELEMENT_NODE:
+                            if c.tagName == "geometry":
+                                if c.childNodes[1].tagName == "box":
+                                    size = c.childNodes[1].getAttribute("size").split()
+                                    geometry = Box((float(size[0]), float(size[1]), float(size[2])))
+                                elif c.childNodes[1].tagName == "cylinder":
+                                    radius = float(c.childNodes[1].getAttribute("radius"))
+                                    length = float(c.childNodes[1].getAttribute("length"))
+                                    geometry = Cylinder(radius, length)
+                                elif c.childNodes[1].tagName == "capsule":
+                                    radius = float(c.childNodes[1].getAttribute("radius"))
+                                    length = float(c.childNodes[1].getAttribute("length"))
+                                    geometry = Capsule(radius, length)
+                                elif c.childNodes[1].tagName == "sphere":
+                                    radius = float(c.childNodes[1].getAttribute("radius"))
+                                    geometry = Sphere(radius)
+                                elif c.childNodes[1].tagName == "Mesh":
+                                    filename = c.childNodes[1].getAttribute("filename")
+                                    scale = None
+                                    if c.childNodes[1].getAttribute("scale"):
+                                        scale = float(c.childNodes[1].getAttribute("scale"))
+                                    geometry = Mesh(filename, scale)
+                            elif c.tagName == "origin":
+                                xyz = None
+                                rpy = None
+                                for key, value in c.attributes.items():
+                                    values = value.split()
+                                    if key == "xyz":
+                                        xyz = (float(values[0]), float(values[1]), float(values[2]))
+                                    elif key == "rpy":
+                                        rpy = (float(values[0]), float(values[1]), float(values[2]))
+                                origin = Origin(xyz, rpy)
+                            elif c.tagName == "material":
+                                materialName = c.getAttribute("name")
+                                color = None
+                                texture = None
+                                for materialChild in c.childNodes:
+                                    if materialChild.nodeType == minidom.Node.ELEMENT_NODE:
+                                        if materialChild.tagName == "color":
+                                            rgba = materialChild.getAttribute("rgba").split()
+                                            color = (float(rgba[0]), float(rgba[1]), float(rgba[2]), float(rgba[3]))
+                                        elif materialChild.tagName == "texture": 
+                                            texture = materialChild.getAttribute("filename")
+                                material = Material(materialName, color, texture)
+                    visuals.append(Visual(geometry, visualName, origin, material))
                 elif child.tagName == "collision":
                     print("Collision")
-                else:
-                    pass
 
         link = Link(name, inertial, visuals, collisions)
         robot.addLink(link)
