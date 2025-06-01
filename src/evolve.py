@@ -5,6 +5,7 @@ Date: May 2025
 """
 from utils.morphology import *
 import copy
+import math
 
 """ 
 Mutates a given robot by creating a copy of the robot and augmenting features with 
@@ -40,13 +41,59 @@ def addLimb(robot: Robot, randomness: float = 0.1) -> Robot:
     # Create a copy of the robot that will be mutated. 
     mutatedRobot = copy.deepcopy(robot)
 
-    # Add a limb link to one of the existing links with a new joint.
-    # Get torso link. 
-    # Create a new link.
-    # Create a new joint.
+    # Find torso link. 
+    links = mutatedRobot.getLinks()
+    torsoLink = mutatedRobot.getTorso()
+    if torsoLink is None:
+        raise ValueError("Robot has no torso link")
+    
+    # TODO - Fix the naming 
+    limbName = "new_link_name_limb"
+
+    # Usually there's only one visual. Visual and Collision should be the same. 
+    # Visual needs the following:
+    # Origin 
+    # Geometry
+    # name (optional)
+    # Material - doesn't matter
+    limbVisuals = Visual(
+        Origin(xyz = tuple[0.03, 0, 0], rpy = tuple[0, math.pi/2, 0]),   # origin
+        Cylinder(radius = 0.02, length = 0.06),                          # geometry
+        material = Material("red", [1.0, 0, 0, 0.9])                     # material
+    )
+
+    # Collision should be the same as Visual (without Material)
+    limbCollisions = Collision(
+        Origin(xyz = tuple[0.03, 0, 0], rpy = tuple[0, math.pi/2, 0]),  # origin
+        Cylinder(radius = 0.02, length = 0.06),                         # geometry
+    )
+
+    limbInertial = Inertial()
+
+    # Create a new limb link.
+    limb = Link(
+        limbName, 
+        limbInertial, 
+        list[limbVisuals], 
+        list[limbCollisions])
+
+    # Create intermediate link. 
+    intermediateLink = Link()
+    # Create a new joint (intermediate to torso)
+
+    # Create a new joint (limb to intermediate)
+
+    # Find a location on the torso so the new link won't collide with another. 
+    # (is not at the same location as another existing link that is connected to the torso).
+
+    
     # Add to the robot torso as a child.
 
-    # Make sure it doesn't collide with another limb 
+    # Make sure it doesn't collide with another limb
+
+    # 2. Add a limb link to one of the existing links with a new joint.
+    # Make a joint on a limb. 
+
     return mutatedRobot
 
 # Remove a limb from the torso. 
