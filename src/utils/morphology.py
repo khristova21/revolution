@@ -772,8 +772,45 @@ def convertUrdfToRobot(filename: str) -> Robot:
                                 material = Material(materialName, color, texture)
                     visuals.append(Visual(geometry, visualName, origin, material))
                 elif child.tagName == "collision":
-                    print("Collision")
-
+                    geometry = None
+                    collisionName = None
+                    origin = None
+                    if child.getAttribute("name"):
+                        collisionName = child.getAttribute("name")
+                    for c in child.childNodes:
+                        if c.nodeType == minidom.Node.ELEMENT_NODE:
+                            if c.tagName == "geometry":
+                                if c.childNodes[1].tagName == "box":
+                                    size = c.childNodes[1].getAttribute("size").split()
+                                    geometry = Box((float(size[0]), float(size[1]), float(size[2])))
+                                elif c.childNodes[1].tagName == "cylinder":
+                                    radius = float(c.childNodes[1].getAttribute("radius"))
+                                    length = float(c.childNodes[1].getAttribute("length"))
+                                    geometry = Cylinder(radius, length)
+                                elif c.childNodes[1].tagName == "capsule":
+                                    radius = float(c.childNodes[1].getAttribute("radius"))
+                                    length = float(c.childNodes[1].getAttribute("length"))
+                                    geometry = Capsule(radius, length)
+                                elif c.childNodes[1].tagName == "sphere":
+                                    radius = float(c.childNodes[1].getAttribute("radius"))
+                                    geometry = Sphere(radius)
+                                elif c.childNodes[1].tagName == "Mesh":
+                                    filename = c.childNodes[1].getAttribute("filename")
+                                    scale = None
+                                    if c.childNodes[1].getAttribute("scale"):
+                                        scale = float(c.childNodes[1].getAttribute("scale"))
+                                    geometry = Mesh(filename, scale)
+                            elif c.tagName == "origin":
+                                xyz = None
+                                rpy = None
+                                for key, value in c.attributes.items():
+                                    values = value.split()
+                                    if key == "xyz":
+                                        xyz = (float(values[0]), float(values[1]), float(values[2]))
+                                    elif key == "rpy":
+                                        rpy = (float(values[0]), float(values[1]), float(values[2]))
+                                origin = Origin(xyz, rpy)
+                    collisions.append(Collision(geometry, collisionName, origin))
         link = Link(name, inertial, visuals, collisions)
         robot.addLink(link)
 
