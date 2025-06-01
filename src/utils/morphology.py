@@ -472,7 +472,7 @@ class Robot:
     # having multiple torsos in a robot.
     def getTorso(self) -> Link:
         # Return the first TORSO link that is found. 
-        for link in self.getLinks:
+        for link in self.getLinks():
             if link.getRole() is Role.TORSO:
                 return link
 
