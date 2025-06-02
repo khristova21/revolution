@@ -137,7 +137,7 @@ def addLimb(robot: Robot, randomness: float = 0.1) -> Robot:
         child = intermediateLink,
         origin = Origin(xyz, (0, 0, 0)),
         axis = (0, 0, 1), # Rotation around z-axis for pitch
-        limit = Limit(1.0, 2.0, -1.5, 1.5)
+        limit = Limit(1.0, 2.0, -1.4, 1.4)
     )
     
     # Create a new joint (intermediate to limb)
@@ -148,7 +148,7 @@ def addLimb(robot: Robot, randomness: float = 0.1) -> Robot:
         child = limbLink,
         origin = Origin((0, 0, 0), (0, 0, 0)),
         axis = (0, 1, 0), # Rotation around y-axis for yaw
-        limit = Limit(1.0, 2.0, -1.5, 1.5)
+        limit = Limit(1.0, 2.0, -1.4, 1.4)
     )
     print(jointTorsoToIntermediate.getParent().getName() )
     print(jointIntermediateToLimb.getParent().getName() )
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     # Generate Robot from test.urdf
     initialRobot = convertUrdfToRobot("simple.urdf")
     #initialRobot = convertUrdfToRobot("simple_cyl.urdf")
-    initialRobot = convertUrdfToRobot("stompy-5.urdf")
+    #initialRobot = convertUrdfToRobot("stompy-5.urdf")
 
     print("Running evolve")
     mutatedRobots = evolve([(initialRobot, 1)])
