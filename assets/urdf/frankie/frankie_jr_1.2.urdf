@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="frankie_j1.1">
+<robot name="frankie_jr_1.2">
   <link name="torso">
     <visual>
       <geometry>
