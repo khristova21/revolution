@@ -1,0 +1,470 @@
+<?xml version="1.0"?>
+<robot name="frankie_jr_1.2">
+  <link name="torso">
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ===== Arm 0 ===== -->
+  <link name="shoulder_0">
+  </link>
+
+  <link name="arm_0">
+    <visual>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+      <material name="Purple">
+        <color rgba="0.6 0 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_0">
+  </link>
+
+  <link name="hand_0">
+    <visual>
+      <origin xyz="0 0 -0.02" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.06"/>
+      </geometry>
+      <material name="Green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.02" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_ts_0" type="revolute">
+    <parent link="torso"/>
+    <child link="shoulder_0"/>
+    <origin xyz="0 0 0" rpy="0.78 3.1415 -1.57"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_sa_0" type="revolute">
+    <parent link="shoulder_0"/>
+    <child link="arm_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.20" upper="0.20" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_aw_0" type="revolute">
+    <parent link="arm_0"/>
+    <child link="wrist_0"/>
+    <origin xyz="0 0 -0.09" rpy="-0.39 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_wh_0" type="revolute">
+    <parent link="wrist_0"/>
+    <child link="hand_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Arm 1 ===== -->
+  <link name="shoulder_1">
+  </link>
+
+  <link name="arm_1">
+    <visual>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+      <material name="Purple">
+        <color rgba="0.6 0 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_1">
+  </link>
+
+  <link name="hand_1">
+    <visual>
+      <origin xyz="0 0 -0.02" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.06"/>
+      </geometry>
+      <material name="Green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.02" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_ts_1" type="revolute">
+    <parent link="torso"/>
+    <child link="shoulder_1"/>
+    <origin xyz="0 0 0" rpy="-0.78 3.1415 -1.57"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_sa_1" type="revolute">
+    <parent link="shoulder_1"/>
+    <child link="arm_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.20" upper="0.20" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_aw_1" type="revolute">
+    <parent link="arm_1"/>
+    <child link="wrist_1"/>
+    <origin xyz="0 0 -0.09" rpy="-0.39 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_wh_1" type="revolute">
+    <parent link="wrist_1"/>
+    <child link="hand_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Leg 0 ===== -->
+  <link name="inter_0">
+  </link>
+
+  <link name="leg_0">
+    <visual>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="knee_0">
+  </link>
+
+  <link name="foot_0">
+    <visual>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+      <material name="Idk">
+        <color rgba="1 0.78 0.98 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_ti_0" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_0"/>
+    <origin xyz="0 0 0" rpy="1.17 0 -0.78"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_il_0" type="revolute">
+    <parent link="inter_0"/>
+    <child link="leg_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.20" upper="0.20" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_lk_0" type="revolute">
+    <parent link="leg_0"/>
+    <child link="knee_0"/>
+    <origin xyz="0 0 -0.09" rpy="-0.39 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_kf_0" type="revolute">
+    <parent link="knee_0"/>
+    <child link="foot_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Leg 1 ===== -->
+  <link name="inter_1">
+  </link>
+
+  <link name="leg_1">
+
+    <visual>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="knee_1">
+  </link>
+
+  <link name="foot_1">
+    <visual>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+      <material name="Idk">
+        <color rgba="1 0.78 0.98 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_ti_1" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_1"/>
+    <origin xyz="0 0 0" rpy="1.17 0 0.78"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_il_1" type="revolute">
+    <parent link="inter_1"/>
+    <child link="leg_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.20" upper="0.20" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_lk_1" type="revolute">
+    <parent link="leg_1"/>
+    <child link="knee_1"/>
+    <origin xyz="0 0 -0.09" rpy="-0.39 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_kf_1" type="revolute">
+    <parent link="knee_1"/>
+    <child link="foot_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Leg 2 ===== -->
+  <link name="inter_2">
+  </link>
+
+  <link name="leg_2">
+    <visual>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="knee_2">
+  </link>
+
+  <link name="foot_2">
+    <visual>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+      <material name="Idk">
+        <color rgba="1 0.78 0.98 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_ti_2" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_2"/>
+    <origin xyz="0 0 0" rpy="1.17 0 -2.36"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_il_2" type="revolute">
+    <parent link="inter_2"/>
+    <child link="leg_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.20" upper="0.20" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_lk_2" type="revolute">
+    <parent link="leg_2"/>
+    <child link="knee_2"/>
+    <origin xyz="0 0 -0.09" rpy="-0.39 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_kf_2" type="revolute">
+    <parent link="knee_2"/>
+    <child link="foot_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Leg 3 ===== -->
+  <link name="inter_3">
+  </link>
+
+  <link name="leg_3">
+    <visual>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="knee_3">
+  </link>
+
+  <link name="foot_3">
+    <visual>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+      <material name="Idk">
+        <color rgba="1 0.78 0.98 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.017" length="0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_ti_3" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_3"/>
+    <origin xyz="0 0 0" rpy="1.17 0 2.36"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_il_3" type="revolute">
+    <parent link="inter_3"/>
+    <child link="leg_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.20" upper="0.20" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_lk_3" type="revolute">
+    <parent link="leg_3"/>
+    <child link="knee_3"/>
+    <origin xyz="0 0 -0.09" rpy="-0.39 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_kf_3" type="revolute">
+    <parent link="knee_3"/>
+    <child link="foot_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.0" upper="1.0" effort="1.0" velocity="2.0"/>
+  </joint>
+
+</robot>
