@@ -217,10 +217,10 @@ def evolve(robots: list[tuple[Robot, float]]) -> list[Robot]:
 
 if __name__ == "__main__":
     # Generate Robot from test.urdf
-    initialRobot = convertUrdfToRobot("simple.urdf")
+    #initialRobot = convertUrdfToRobot("simple.urdf")
     #initialRobot = convertUrdfToRobot("simple_cyl.urdf")
     #initialRobot = convertUrdfToRobot("stompy-5.urdf")
-
+    initialRobot = convertUrdfToRobot("ball_head.urdf")
     print("Running evolve")
     mutatedRobots = evolve([(initialRobot, 1)])
     print("Converting evolved robots into to URDF")
