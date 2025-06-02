@@ -107,13 +107,13 @@ def addLimb(robot: Robot, randomness: float = 0.1) -> Robot:
     # Visual needs the following: Origin , Geometry, Material - doesn't matter
     limbVisuals = Visual(
         origin = Origin(xyz=xyz, rpy = (0, 0, 0)), #aligned down
-        geometry = Cylinder(radius = limbRadius, length = limbLength),
+        geometry = Capsule(radius = limbRadius, length = limbLength),
         material = Material("red", [1.0, 0, 0, 0.9])
     )
     # Collision should be the same as Visual (without Material)
     limbCollisions = Collision(
         origin = Origin(xyz=xyz, rpy = (0, 0, 0)), #aligned down
-        geometry = Cylinder(radius = limbRadius, length = limbLength)
+        geometry = Capsule(radius = limbRadius, length = limbLength)
     )
     # Create a new limb link.
     limbLink = Link(
