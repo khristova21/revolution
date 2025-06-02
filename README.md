@@ -68,3 +68,8 @@ https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/pip_installa
     ├── .gitignore                   # Ignore checkpoints, logs, large binary files
     ├── requirements.txt             # Python packages (Isaac Lab, Gymnasium, W&B, Tianshou, MuJoCo, etc.)
     └── README.md                    # Instructions for running, setup, and reproducing experiments
+
+## Extra
+**Link to visualize URDFs:** http://urdf.robotsfan.com/ 
+
+Usage: Upload a URDF file to visualize its structure before training. 
