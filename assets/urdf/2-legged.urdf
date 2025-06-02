@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<robot name="simple_evolved_corner_3">
+	<link name="torso">
+		<inertial>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+			<mass value="1.0"/>
+			<inertia ixx="0.0002" ixy="0.0" ixz="0.0" iyy="0.0002" iyz="0.0" izz="0.0001"/>
+		</inertial>
+		<visual>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 1.5708 0.0"/>
+			<geometry>
+				<cylinder radius="0.04" length="0.2"/>
+			</geometry>
+			<material name="green">
+				<color rgba="0.2 0.8 0.2 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 1.5708 0.0"/>
+			<geometry>
+				<cylinder radius="0.04" length="0.2"/>
+			</geometry>
+		</collision>
+	</link>
+	<link name="link_368f2afa-7527-42ae-8d90-9aa52cfa6200_limb">
+		<visual>
+			<origin xyz="-0.028284271247461905 0.028284271247461905 -0.04" rpy="0.0 0.0 0.0"/>
+			<geometry>
+				<cylinder radius="0.013333333333333334" length="0.08"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1.0 0.0 0.0 0.9"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="-0.028284271247461905 0.028284271247461905 -0.04" rpy="0.0 0.0 0.0"/>
+			<geometry>
+				<cylinder radius="0.013333333333333334" length="0.08"/>
+			</geometry>
+		</collision>
+	</link>
+	<link name="link_intermediate_ea33d7d6-23b7-4c5d-bf03-fddde14f5226_limb">
+		<inertial>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+			<mass value="0.001"/>
+			<inertia ixx="1e-06" ixy="0.0" ixz="0.0" iyy="1e-06" iyz="0.0" izz="1e-06"/>
+		</inertial>
+	</link>
+	<link name="link_b2249b01-d325-4abb-b9a0-9100c221e5a4_limb">
+		<visual>
+			<origin xyz="0.023284271247461904 -0.028284271247461905 -0.04" rpy="0 0 0"/>
+			<geometry>
+				<cylinder radius="0.013333333333333334" length="0.08"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1.0 0 0 0.9"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0.023284271247461904 -0.028284271247461905 -0.04" rpy="0 0 0"/>
+			<geometry>
+				<cylinder radius="0.013333333333333334" length="0.08"/>
+			</geometry>
+		</collision>
+	</link>
+	<link name="link_intermediate_7d22e3ac-9592-4220-88a4-4c1b2d93dc83_limb">
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="0.001"/>
+			<inertia ixx="1e-06" ixy="0" ixz="0" iyy="1e-06" iyz="0" izz="1e-06"/>
+		</inertial>
+	</link>
+	<joint name="joint_torso_to_link_intermediate_ea33d7d6-23b7-4c5d-bf03-fddde14f5226_limb" type="revolute">
+		<origin xyz="-0.028284271247461905 0.028284271247461905 -0.04" rpy="0.0 0.0 0.0"/>
+		<parent link="torso"/>
+		<child link="link_intermediate_ea33d7d6-23b7-4c5d-bf03-fddde14f5226_limb"/>
+		<axis xyz="0.0 0.0 1.0"/>
+		<limit effort="1.0" velocity="2.0" lower="-1.5" upper="1.5"/>
+	</joint>
+	<joint name="joint_link_intermediate_ea33d7d6-23b7-4c5d-bf03-fddde14f5226_limb_to_link_368f2afa-7527-42ae-8d90-9aa52cfa6200_limb" type="revolute">
+		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+		<parent link="link_intermediate_ea33d7d6-23b7-4c5d-bf03-fddde14f5226_limb"/>
+		<child link="link_368f2afa-7527-42ae-8d90-9aa52cfa6200_limb"/>
+		<axis xyz="0.0 1.0 0.0"/>
+		<limit effort="1.0" velocity="2.0" lower="-1.5" upper="1.5"/>
+	</joint>
+	<joint name="joint_torso_to_link_intermediate_7d22e3ac-9592-4220-88a4-4c1b2d93dc83_limb" type="revolute">
+		<origin xyz="0.023284271247461904 -0.028284271247461905 -0.04" rpy="0 0 0"/>
+		<parent link="torso"/>
+		<child link="link_intermediate_7d22e3ac-9592-4220-88a4-4c1b2d93dc83_limb"/>
+		<axis xyz="0 0 1"/>
+		<limit effort="1.0" velocity="2.0" lower="-1.5" upper="1.5"/>
+	</joint>
+	<joint name="joint_link_intermediate_7d22e3ac-9592-4220-88a4-4c1b2d93dc83_limb_to_link_b2249b01-d325-4abb-b9a0-9100c221e5a4_limb" type="revolute">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="link_intermediate_7d22e3ac-9592-4220-88a4-4c1b2d93dc83_limb"/>
+		<child link="link_b2249b01-d325-4abb-b9a0-9100c221e5a4_limb"/>
+		<axis xyz="0 1 0"/>
+		<limit effort="1.0" velocity="2.0" lower="-1.5" upper="1.5"/>
+	</joint>
+</robot>
