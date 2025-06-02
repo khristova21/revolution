@@ -2,7 +2,7 @@
 <robot name="caterpillar">
 
   <!-- ===== Link 0 (head) ===== -->
-  <link name="segment_0">
+  <link name="segment_0_limb">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
@@ -30,7 +30,7 @@
   </link>
 
   <!-- ===== Link 1 ===== -->
-  <link name="segment_1">
+  <link name="segment_1_torso">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
@@ -56,7 +56,7 @@
   </link>
 
   <!-- ===== Link 2 ===== -->
-  <link name="segment_2">
+  <link name="segment_2_limb">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
@@ -82,7 +82,7 @@
   </link>
 
   <!-- ===== Link 3 (tail) ===== -->
-  <link name="segment_3">
+  <link name="segment_3_limb">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.10"/>
@@ -110,8 +110,8 @@
   <!-- ===== Joint 1 ===== -->
   <joint name="joint_0_1" type="revolute">
     <!-- connects segment_0 (parent) to segment_1 (child) -->
-    <parent link="segment_0"/>
-    <child  link="segment_1"/>
+    <parent link="segment_0_limb"/>
+    <child  link="segment_1_torso"/>
     <!-- joint frame sits at tail of parent capsule -->
     <origin xyz="0.06 0 0" rpy="0 0 0"/>
     <!-- bend up/down around local z-axis -->
@@ -121,8 +121,8 @@
 
   <!-- ===== Joint 2 ===== -->
   <joint name="joint_1_2" type="revolute">
-    <parent link="segment_1"/>
-    <child  link="segment_2"/>
+    <parent link="segment_1_torso"/>
+    <child  link="segment_2_limb"/>
     <origin xyz="0.06 0 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
@@ -130,8 +130,8 @@
 
   <!-- ===== Joint 3 ===== -->
   <joint name="joint_2_3" type="revolute">
-    <parent link="segment_2"/>
-    <child  link="segment_3"/>
+    <parent link="segment_2_limb"/>
+    <child  link="segment_3_limb"/>
     <origin xyz="0.06 0 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
