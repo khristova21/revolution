@@ -57,7 +57,28 @@ https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/pip_installa
     ├── requirements.txt             # Python packages (Isaac Lab, Gymnasium, W&B, Tianshou, MuJoCo, etc.)
     └── README.md                    # Instructions for running, setup, and reproducing experiments
 
+# Graphs
+Analysis graphs from training are located in `/figures/graphs/`.
+
+# Custom Morphologies
+Custom URDF-based morphologies are located in `/assets/urdf/`.
+
+Images of some of our custom morphologies are located in `/figures/morphologies/`.
+
+### Morphologies specifically used for training and analysis:
+- caterpillar.urdf
+- stompy_4.urdf
+- frankie_jr_1.3.urdf
+- frankie_jr.urdf
+
+### Morphology created by simple evolution:
+The four-legged `stompy` morphology was created via *evolution* by adding a new limb at each run through. The collection of morphologies is located in `/assets/urdf/stompy/stompy-capsules/`. 
+
+Each `stompy_<numLegs>.urdf` file represents a torso with a different number of legs that was sequentially developed by passing one `stompy` URDF file through `evolve` which attempts to add a limb at a corner of the robot each iteration. This was performed for 5 iterations resulting in 5 different evolved `stompy` morphologies.
+
+
+
 ## Extra
 **Link to visualize URDFs:** http://urdf.robotsfan.com/ 
 
-Usage: Upload a URDF file to visualize its structure before training. 
+**Usage**: Upload a URDF file to visualize its structure while making initial custom morphologies before using for training. 
