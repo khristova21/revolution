@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<robot name="gorilla">
+
+  <!-- ====================== TORSO (horizontal along +X) ====================== -->
+  <link name="torso">
+    <visual>
+      <!-- Lay capsule length (0.2 m) along +X -->
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <capsule radius="0.03" length="0.2"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- ====================== LEG 0: FRONT‐LEFT ====================== -->
+  <link name="inter_0"/>
+  <link name="upper_leg_0">
+    <visual>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+      <geometry>
+        <capsule radius="0.015" length="0.10"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="lower_leg_0">
+    <visual>
+      <origin xyz="0 0 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <capsule radius="0.01" length="0.05"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Hip – pitch joint (about torso’s local Y) -->
+  <joint name="joint_0_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_0"/>
+    <origin xyz="0.100 0.040 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.6" upper="0.6" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- Hip – yaw joint (about torso’s local X) -->
+  <joint name="joint_0_yaw" type="revolute">
+    <parent link="inter_0"/>
+    <child link="upper_leg_0"/>
+    <!-- Rotate +30° about X so leg points outward at rest -->
+    <origin xyz="0 0 0" rpy="0 0 0.5236"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- Knee joint (about local Y) -->
+  <joint name="joint_0_knee" type="revolute">
+    <parent link="upper_leg_0"/>
+    <child link="lower_leg_0"/>
+    <origin xyz="0 0 -0.10" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.6" effort="1.0" velocity="2.0"/>
+  </joint>
+
+
+  <!-- ====================== LEG 1: FRONT‐RIGHT ====================== -->
+  <link name="inter_1"/>
+  <link name="upper_leg_1">
+    <visual>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+      <geometry>
+        <capsule radius="0.015" length="0.10"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="lower_leg_1">
+    <visual>
+      <origin xyz="0 0 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <capsule radius="0.01" length="0.05"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_1_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_1"/>
+    <origin xyz="0.100 -0.040 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.6" upper="0.6" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_1_yaw" type="revolute">
+    <parent link="inter_1"/>
+    <child link="upper_leg_1"/>
+    <!-- Rotate −30° about X so right leg points outward at rest -->
+    <origin xyz="0 0 0" rpy="0 0 -0.5236"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <joint name="joint_1_knee" type="revolute">
+    <parent link="upper_leg_1"/>
+    <child link="lower_leg_1"/>
+    <origin xyz="0 0 -0.10" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.6" effort="1.0" velocity="2.0"/>
+  </joint>
+
+
+  <!-- ====================== LEG 2: REAR‐LEFT ====================== -->
+  <link name="inter_2"/>
+  <link name="upper_leg_2">
+    <visual>
+      <origin xyz="0 0 -0.10" rpy="0 0 0"/>
+      <geometry>
+        <capsule radius="0.02" length="0.20"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="lower_leg_2">
+    <visual>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+      <geometry>
+        <capsule radius="0.015" length="0.10"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_2_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_2"/>
+    <origin xyz="-0.100 0.040 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.6" upper="0.6" effort="1.0" veloci

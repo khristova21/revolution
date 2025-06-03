@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+<robot name="spider">
+  <link name="body">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="1.0"/>
+      <inertia ixx="0.002" iyy="0.002" izz="0.002" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><geometry><cylinder radius="0.03" length="0.2"/></geometry></visual>
+    <collision><geometry><cylinder radius="0.03" length="0.2"/></geometry></collision>
+  </link>
+
+  <link name="inter_0">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_0">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 0 Part A (Pitch) ===== -->
+  <joint name="joint_0_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_0"/>
+    <origin xyz="0.060 0.000 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 0 Part B (Yaw) ===== -->
+  <joint name="joint_0_yaw" type="revolute">
+    <parent link="inter_0"/>
+    <child link="leg_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_1">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_1">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 1 Part A (Pitch) ===== -->
+  <joint name="joint_1_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_1"/>
+    <origin xyz="0.042 0.042 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 1 Part B (Yaw) ===== -->
+  <joint name="joint_1_yaw" type="revolute">
+    <parent link="inter_1"/>
+    <child link="leg_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_2">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_2">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 2 Part A (Pitch) ===== -->
+  <joint name="joint_2_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_2"/>
+    <origin xyz="0.000 0.060 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 2 Part B (Yaw) ===== -->
+  <joint name="joint_2_yaw" type="revolute">
+    <parent link="inter_2"/>
+    <child link="leg_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_3">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_3">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 3 Part A (Pitch) ===== -->
+  <joint name="joint_3_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_3"/>
+    <origin xyz="-0.042 0.042 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 3 Part B (Yaw) ===== -->
+  <joint name="joint_3_yaw" type="revolute">
+    <parent link="inter_3"/>
+    <child link="leg_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_4">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_4">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 4 Part A (Pitch) ===== -->
+  <joint name="joint_4_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_4"/>
+    <origin xyz="-0.060 0.000 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 4 Part B (Yaw) ===== -->
+  <joint name="joint_4_yaw" type="revolute">
+    <parent link="inter_4"/>
+    <child link="leg_4"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_5">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_5">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 5 Part A (Pitch) ===== -->
+  <joint name="joint_5_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_5"/>
+    <origin xyz="-0.042 -0.042 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 5 Part B (Yaw) ===== -->
+  <joint name="joint_5_yaw" type="revolute">
+    <parent link="inter_5"/>
+    <child link="leg_5"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_6">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_6">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 6 Part A (Pitch) ===== -->
+  <joint name="joint_6_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_6"/>
+    <origin xyz="-0.000 -0.060 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 6 Part B (Yaw) ===== -->
+  <joint name="joint_6_yaw" type="revolute">
+    <parent link="inter_6"/>
+    <child link="leg_6"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_7">
+    <inertial><origin xyz="0 0 0" rpy="0 0 0"/><mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <link name="leg_7">
+    <inertial><origin xyz="0 0 -0.1" rpy="0 0 0"/><mass value="0.05"/>
+      <inertia ixx="5e-5" iyy="5e-5" izz="5e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </collision>
+  </link>
+  <!-- ===== Joint 7 Part A (Pitch) ===== -->
+  <joint name="joint_7_pitch" type="revolute">
+    <parent link="body"/>
+    <child link="inter_7"/>
+    <origin xyz="0.042 -0.042 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 7 Part B (Yaw) ===== -->
+  <joint name="joint_7_yaw" type="revolute">
+    <parent link="inter_7"/>
+    <child link="leg_7"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
+</robot>

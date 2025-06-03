@@ -13,8 +13,8 @@ Team Members:
 Run `setup.ps1` if on Windows or `setup.sh` if on Linux (Note Mac is not supported as there is no CUDA support)
 
 If in VSCode, ***press cmd + shift + P***, search ***"Python: Select Interpreter"*** and select the venv folder (or manually source via the command line)
-- Linux: ***TODO***
-- Windows: ***TODO***
+
+Additionally, run `pip install requirement.txt` after running the installation script
 
 For additional details see:  
 https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/pip_installation.html
@@ -25,19 +25,7 @@ https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/pip_installa
     ├── assets/
     │   ├── urdf/
     │   │   ├── design_01/
-    │   │   │   ├── agent_v1.urdf
-    │   │   │   ├── agent_v2.urdf
-    │   │   │   └── ...
     │   │   ├── design_02/
-    │   │   │   ├── agent_v1.urdf
-    │   │   │   └── agent_v2.urdf
-    │   │   │   └── ...
-    │   │   ├── ...
-    │   │   └── final_designs/
-    │   ├── meshes/
-    │   │   ├── limbs/
-    │   │   └── body_parts/
-    │   └── textures/
     ├── configs/
     │   ├── sim_config.yaml          # General Isaac Sim config 
     │   ├── training_config.yaml     # RL algorithm hyperparameters 

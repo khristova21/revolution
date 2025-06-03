@@ -1,16 +1,7 @@
 <?xml version="1.0"?>
 <robot name="caterpillar">
-
   <!-- ===== Link 0 (head) ===== -->
-  <link name="segment_0_limb">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.10"/>
-      <inertia ixx="2.0e-4" ixy="0"  ixz="0"
-               iyy="2.0e-4" iyz="0"
-               izz="1.0e-4"/>
-    </inertial>
-
+  <link name="torso">
     <visual>
       <origin xyz="0 0 0" rpy="0 1.5708 0"/>
       <geometry>
@@ -20,7 +11,6 @@
         <color rgba="0.2 0.8 0.2 1"/>
       </material>
     </visual>
-
     <collision>
       <origin xyz="0 0 0" rpy="0 1.5708 0"/>
       <geometry>
@@ -28,79 +18,68 @@
       </geometry>
     </collision>
   </link>
-
+  
+  <!-- ===== Intermediate Link 0-1 (for compound joint) ===== -->
+  <link name="intermediate_0_1">
+    <!-- No visual - invisible intermediate link -->
+  </link>
+  
   <!-- ===== Link 1 ===== -->
-  <link name="segment_1_torso">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.10"/>
-      <inertia ixx="2.0e-4" ixy="0"  ixz="0"
-               iyy="2.0e-4" iyz="0"
-               izz="1.0e-4"/>
-    </inertial>
-
+  <link name="segment_1">
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
       <material name="green"/>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
     </collision>
   </link>
+  
+  <!-- ===== Intermediate Link 1-2 (for compound joint) ===== -->
+  <link name="intermediate_1_2">
 
+  </link>
+  
   <!-- ===== Link 2 ===== -->
-  <link name="segment_2_limb">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.10"/>
-      <inertia ixx="2.0e-4" ixy="0"  ixz="0"
-               iyy="2.0e-4" iyz="0"
-               izz="1.0e-4"/>
-    </inertial>
+  <link name="segment_2">
 
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
       <material name="green"/>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
     </collision>
   </link>
+  
+  <!-- ===== Intermediate Link 2-3 (for compound joint) ===== -->
+  <link name="intermediate_2_3">
 
+  </link>
+  
   <!-- ===== Link 3 (tail) ===== -->
-  <link name="segment_3_limb">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.10"/>
-      <inertia ixx="2.0e-4" ixy="0"  ixz="0"
-               iyy="2.0e-4" iyz="0"
-               izz="1.0e-4"/>
-    </inertial>
-
+  <link name="segment_3">
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
       <material name="green"/>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0.03 0 0" rpy="0 1.5708 0"/>
       <geometry>
         <capsule radius="0.02" length="0.06"/>
       </geometry>
@@ -136,5 +115,13 @@
     <axis xyz="0 0 1"/>
     <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
   </joint>
-
+  
+  <!-- ===== Joint 2-3 Part B (Yaw) ===== -->
+  <joint name="joint_2_3_yaw" type="revolute">
+    <parent link="intermediate_2_3"/>
+    <child link="segment_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="2.0"/>
+  </joint>
 </robot>

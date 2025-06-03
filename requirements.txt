@@ -1,12 +1,14 @@
 absl-py==2.2.2
+annotated-types==0.7.0
 antlr4-python3-runtime==4.9.3
 anyio==4.9.0
 asttokens==3.0.0
-boto3==1.38.13
-botocore==1.38.13
+astunparse==1.6.3
+boto3==1.38.14
+botocore==1.38.14
 certifi==2025.4.26
 charset-normalizer==3.4.2
-click==8.1.8
+click==8.2.0
 cloudpickle==3.1.1
 colorama==0.4.6
 comm==0.2.2
@@ -15,15 +17,18 @@ cycler==0.12.1
 decorator==4.4.2
 docker-pycreds==0.4.0
 einops==0.8.1
-exceptiongroup==1.2.2
+exceptiongroup==1.3.0
 executing==2.2.0
 Farama-Notifications==0.0.4
 filelock==3.13.1
+flatbuffers==25.2.10
 flatdict==4.0.1
-fonttools==4.57.0
+fonttools==4.58.0
 fsspec==2024.6.1
+gast==0.6.0
 gitdb==4.0.12
 GitPython==3.1.44
+google-pasta==0.2.0
 grpcio==1.71.0
 gym==0.23.1
 gym-notices==0.0.8
@@ -37,11 +42,11 @@ imageio==2.37.0
 imageio-ffmpeg==0.6.0
 ipython==8.36.0
 ipywidgets==8.1.5
--e git+https://github.com/isaac-sim/IsaacLab.git@b1cd175f88d8315360095c96dfcfdab518f7778d#egg=isaaclab&subdirectory=source\isaaclab
--e git+https://github.com/isaac-sim/IsaacLab.git@b1cd175f88d8315360095c96dfcfdab518f7778d#egg=isaaclab_assets&subdirectory=source\isaaclab_assets
--e git+https://github.com/isaac-sim/IsaacLab.git@b1cd175f88d8315360095c96dfcfdab518f7778d#egg=isaaclab_mimic&subdirectory=source\isaaclab_mimic
--e git+https://github.com/isaac-sim/IsaacLab.git@b1cd175f88d8315360095c96dfcfdab518f7778d#egg=isaaclab_rl&subdirectory=source\isaaclab_rl
--e git+https://github.com/isaac-sim/IsaacLab.git@b1cd175f88d8315360095c96dfcfdab518f7778d#egg=isaaclab_tasks&subdirectory=source\isaaclab_tasks
+-e git+https://github.com/isaac-sim/IsaacLab.git@93fd2120cf95fa2e4b37bca855b63fe965d3d344#egg=isaaclab&subdirectory=source\isaaclab
+-e git+https://github.com/isaac-sim/IsaacLab.git@93fd2120cf95fa2e4b37bca855b63fe965d3d344#egg=isaaclab_assets&subdirectory=source\isaaclab_assets
+-e git+https://github.com/isaac-sim/IsaacLab.git@93fd2120cf95fa2e4b37bca855b63fe965d3d344#egg=isaaclab_mimic&subdirectory=source\isaaclab_mimic
+-e git+https://github.com/isaac-sim/IsaacLab.git@93fd2120cf95fa2e4b37bca855b63fe965d3d344#egg=isaaclab_rl&subdirectory=source\isaaclab_rl
+-e git+https://github.com/isaac-sim/IsaacLab.git@93fd2120cf95fa2e4b37bca855b63fe965d3d344#egg=isaaclab_tasks&subdirectory=source\isaaclab_tasks
 isaacsim==4.5.0.0
 isaacsim-app==4.5.0.0
 isaacsim-asset==4.5.0.0
@@ -71,25 +76,34 @@ jedi==0.19.2
 Jinja2==3.1.4
 jmespath==1.0.1
 jupyterlab_widgets==3.0.15
+keras==3.10.0
 kiwisolver==1.4.8
+libclang==18.1.1
 Markdown==3.8
+markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 matplotlib==3.10.3
 matplotlib-inline==0.1.7
+mdurl==0.1.2
+ml_dtypes==0.5.1
 moviepy==1.0.3
 mpmath==1.3.0
+namex==0.1.0
 networkx==3.3
 numpy==1.26.4
 omegaconf==2.3.0
 omniverse-kit==106.5.0.162521
 onnx==1.16.1
 opencv-python==4.11.0.86
+opt_einsum==3.4.0
+optree==0.16.0
 osqp==0.6.7.post3
 packaging==25.0
 pandas==2.2.3
 parso==0.8.4
 pathtools==0.1.2
 pillow==11.0.0
+platformdirs==4.3.8
 prettytable==3.3.0
 proglog==0.1.12
 promise==2.3
@@ -97,6 +111,8 @@ prompt_toolkit==3.0.51
 protobuf==3.20.3
 psutil==5.9.8
 pure_eval==0.2.3
+pydantic==2.11.5
+pydantic_core==2.33.2
 pygame==2.1.0
 pyglet==1.5.31
 Pygments==2.19.1
@@ -108,12 +124,13 @@ PyYAML==6.0.2
 qdldl==0.1.7.post5
 regex==2024.11.6
 requests==2.32.3
+rich==14.0.0
 rl_games==1.6.1
 rsl-rl-lib==2.3.1
 s3transfer==0.12.0
 safetensors==0.5.3
 scipy==1.15.3
-sentry-sdk==2.27.0
+sentry-sdk==2.28.0
 setproctitle==1.3.6
 shortuuid==1.0.13
 six==1.17.0
@@ -127,6 +144,9 @@ sympy==1.13.1
 tensorboard==2.19.0
 tensorboard-data-server==0.7.2
 tensorboardX==2.6.2.2
+tensorflow==2.19.0
+tensorflow-io-gcs-filesystem==0.31.0
+termcolor==3.1.0
 tokenizers==0.21.1
 toml==0.10.2
 tomli==2.2.1
@@ -136,11 +156,13 @@ tqdm==4.67.1
 traitlets==5.14.3
 transformers==4.51.3
 trimesh==4.6.8
+typing-inspection==0.4.1
 typing_extensions==4.12.2
 tzdata==2025.2
 urllib3==2.4.0
-wandb==0.12.21
+wandb==0.19.11
 warp-lang==1.7.1
 wcwidth==0.2.13
 Werkzeug==3.1.3
 widgetsnbextension==4.0.14
+wrapt==1.17.2
