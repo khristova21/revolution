@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<robot name="ball_head">
+  <link name="torso">
+    <visual><geometry><sphere radius="0.1" /></geometry></visual>
+  </link>
+
+  <link name="inter_0">
+  </link>
+  <link name="leg_0">
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><capsule radius="0.01" length="0.2"/></geometry>
+    </visual>
+  </link>
+  <!-- ===== Joint 0 Part A (Pitch) ===== -->
+  <joint name="joint_0_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_0"/>
+    <origin xyz="0.050 0.030 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 0 Part B (Yaw) ===== -->
+  <joint name="joint_0_yaw" type="revolute">
+    <parent link="inter_0"/>
+    <child link="leg_0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_1">
+  </link>
+  <link name="leg_1">
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+  </link>
+  <!-- ===== Joint 1 Part A (Pitch) ===== -->
+  <joint name="joint_1_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_1"/>
+    <origin xyz="0.050 -0.030 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 1 Part B (Yaw) ===== -->
+  <joint name="joint_1_yaw" type="revolute">
+    <parent link="inter_1"/>
+    <child link="leg_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_2">
+  </link>
+  <link name="leg_2">
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+  </link>
+  <!-- ===== Joint 2 Part A (Pitch) ===== -->
+  <joint name="joint_2_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_2"/>
+    <origin xyz="-0.050 0.030 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 2 Part B (Yaw) ===== -->
+  <joint name="joint_2_yaw" type="revolute">
+    <parent link="inter_2"/>
+    <child link="leg_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+  <link name="inter_3">
+  </link>
+  <link name="leg_3">
+    <visual><origin xyz="0 0 -0.1" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.01" length="0.2"/></geometry>
+    </visual>
+  </link>
+  <!-- ===== Joint 3 Part A (Pitch) ===== -->
+  <joint name="joint_3_pitch" type="revolute">
+    <parent link="torso"/>
+    <child link="inter_3"/>
+    <origin xyz="-0.050 -0.030 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+
+  <!-- ===== Joint 3 Part B (Yaw) ===== -->
+  <joint name="joint_3_yaw" type="revolute">
+    <parent link="inter_3"/>
+    <child link="leg_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.2" upper="0.2" effort="1.0" velocity="2.0"/>
+  </joint>
+</robot>
