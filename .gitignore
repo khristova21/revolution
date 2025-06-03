@@ -4,6 +4,8 @@ IsaacLab
 revolution_isaac_lab
 # Don't push python enviroment!
 isaac_env
+assets/usd
+logs
 
 # General
 .vscode
