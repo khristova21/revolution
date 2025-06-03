@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<robot name="stompy_2">
+	<link name="torso">
+		<inertial>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+			<mass value="1.0"/>
+			<inertia ixx="0.0002" ixy="0.0" ixz="0.0" iyy="0.0002" iyz="0.0" izz="0.0001"/>
+		</inertial>
+		<visual>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 1.5708 0.0"/>
+			<geometry>
+				<capsule radius="0.02" length="0.1"/>
+			</geometry>
+			<material name="green">
+				<color rgba="0.2 0.8 0.2 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 1.5708 0.0"/>
+			<geometry>
+				<capsule radius="0.02" length="0.1"/>
+			</geometry>
+		</collision>
+	</link>
+	<link name="link_47ad43f1-ab21-484f-95f9-9ac724485b29_limb">
+		<visual>
+			<origin xyz="0.012 0.006 -0.015" rpy="0 0 0"/>
+			<geometry>
+				<capsule radius="0.006666666666666667" length="0.04"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1.0 0 0 0.9"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0.012 0.006 -0.015" rpy="0 0 0"/>
+			<geometry>
+				<capsule radius="0.006666666666666667" length="0.04"/>
+			</geometry>
+		</collision>
+	</link>
+	<link name="link_intermediate_8aae49f2-faf3-46bb-b288-77fc8b86f1c5_limb"/>
+	<joint name="joint_torso_to_link_intermediate_8aae49f2-faf3-46bb-b288-77fc8b86f1c5_limb" type="revolute">
+		<origin xyz="0.012 0.006 -0.015" rpy="0 0 0"/>
+		<parent link="torso"/>
+		<child link="link_intermediate_8aae49f2-faf3-46bb-b288-77fc8b86f1c5_limb"/>
+		<axis xyz="0 0 1"/>
+		<limit effort="1.0" velocity="2.0" lower="-1.4" upper="1.4"/>
+	</joint>
+	<joint name="joint_link_intermediate_8aae49f2-faf3-46bb-b288-77fc8b86f1c5_limb_to_link_47ad43f1-ab21-484f-95f9-9ac724485b29_limb" type="revolute">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="link_intermediate_8aae49f2-faf3-46bb-b288-77fc8b86f1c5_limb"/>
+		<child link="link_47ad43f1-ab21-484f-95f9-9ac724485b29_limb"/>
+		<axis xyz="0 1 0"/>
+		<limit effort="1.0" velocity="2.0" lower="-1.4" upper="1.4"/>
+	</joint>
+</robot>
